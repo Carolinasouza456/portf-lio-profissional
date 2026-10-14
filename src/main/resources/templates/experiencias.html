@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:lang="${#locale.language}">
+<head th:replace="~{fragmentos/base :: cabecalho(#{experiencias.titulo})}"></head>
+<body>
+
+<div th:replace="~{fragmentos/base :: menu}"></div>
+
+<main class="conteudo">
+    <h1 class="titulo-secao" th:text="#{experiencias.titulo}">Experiências</h1>
+    <p class="intro" th:text="#{experiencias.intro}">Estágios, freelas, projetos open source e eventos técnicos.</p>
+
+    <p class="aviso" th:if="${#lists.size(experiencias) == 1 and experiencias[0].exemplo}"
+       th:text="#{experiencias.aviso}">Ainda não há experiências registradas.</p>
+
+    <ol class="linha-tempo">
+        <li class="linha-tempo__ano aparecer" th:each="e : ${experiencias}">
+            <article class="experiencia">
+                <p class="experiencia__periodo" th:text="#{${'experiencia.' + e.id + '.periodo'}}">Período</p>
+                <h2 class="experiencia__instituicao">
+                    <span th:text="#{${'experiencia.' + e.id + '.instituicao'}}">Empresa</span>
+                    <span class="selo" th:if="${e.exemplo}" th:text="#{experiencias.exemplo}">Exemplo</span>
+                </h2>
+                <h3 class="experiencia__cargo" th:text="#{${'experiencia.' + e.id + '.cargo'}}">Cargo</h3>
+                <p th:text="#{${'experiencia.' + e.id + '.descricao'}}">Descrição</p>
+            </article>
+        </li>
+    </ol>
+</main>
+
+<div th:replace="~{fragmentos/base :: rodape}"></div>
+<script th:replace="~{fragmentos/base :: scripts}"></script>
+</body>
+</html>

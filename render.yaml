@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: portfolio-carolina
+    runtime: docker
+    plan: free
+    healthCheckPath: /
+    envVars:
+      - key: RESEND_API_KEY
+        sync: false          
+      - key: EMAIL_DESTINO
+        value: carolina.amsouza0405@gmail.com

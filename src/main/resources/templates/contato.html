@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:lang="${#locale.language}">
+<head th:replace="~{fragmentos/base :: cabecalho(#{contato.titulo})}"></head>
+<body>
+
+<div th:replace="~{fragmentos/base :: menu}"></div>
+
+<main class="conteudo">
+    <h1 class="titulo-secao" th:text="#{contato.titulo}">Contato</h1>
+    <p class="intro" th:text="#{contato.intro}">Vamos conversar?</p>
+
+    <div class="contato">
+
+        <!-- Ícones clicáveis -->
+        <section class="contato__canais aparecer">
+            <h2 class="contato__subtitulo" th:text="#{contato.canais}">Canais</h2>
+
+            <a class="canal" th:href="'mailto:' + ${email}">
+                <span class="canal__icone" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="1"/><path d="M3 7l9 6 9-6"/></svg>
+                </span>
+                <span class="canal__texto">
+                    <span class="canal__rotulo" th:text="#{contato.email}">E-mail</span>
+                    <span class="canal__valor" th:text="${email}">email@exemplo.com</span>
+                </span>
+            </a>
+
+            <a class="canal" th:href="'https://wa.me/' + ${whatsapp}" target="_blank" rel="noopener noreferrer">
+                <span class="canal__icone" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 20.5l1.4-4.3A8.5 8.5 0 1 1 8 19.3l-4.5 1.2z"/><path d="M9 8.5c0 3.3 2.7 6 6 6l1.1-1.3-1.9-1-.9.7a3.6 3.6 0 0 1-1.7-1.7l.7-.9-1-1.9L9 8.5z"/></svg>
+                </span>
+                <span class="canal__texto">
+                    <span class="canal__rotulo" th:text="#{contato.whatsapp}">WhatsApp</span>
+                    <span class="canal__valor" th:text="${whatsappExibicao}">(00) 00000-0000</span>
+                </span>
+            </a>
+
+            <a class="canal" th:href="${github}" target="_blank" rel="noopener noreferrer">
+                <span class="canal__icone" aria-hidden="true">
+                    <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+                </span>
+                <span class="canal__texto">
+                    <span class="canal__rotulo" th:text="#{contato.github}">GitHub</span>
+                    <span class="canal__valor" th:text="${#strings.replace(github, 'https://', '')}">github.com/usuario</span>
+                </span>
+            </a>
+
+        </section>
+
+        <!-- Formulário -->
+        <section class="contato__formulario aparecer">
+            <h2 class="contato__subtitulo" th:text="#{contato.formulario}">Enviar mensagem</h2>
+
+            <p class="alerta alerta--ok" role="status" th:if="${resultadoEnvio == 'ENVIADO'}" th:text="#{contato.ok}">Enviado!</p>
+            <p class="alerta alerta--erro" role="alert" th:if="${resultadoEnvio == 'NAO_CONFIGURADO'}" th:text="#{contato.naoConfigurado}">Não configurado.</p>
+            <p class="alerta alerta--erro" role="alert" th:if="${resultadoEnvio == 'FALHA'}" th:text="#{contato.falha}">Falha.</p>
+
+            <form th:action="@{/contato}" th:object="${formulario}" method="post" class="formulario">
+                <div class="campo">
+                    <label for="nome" th:text="#{contato.campo.nome}">Nome</label>
+                    <input type="text" id="nome" th:field="*{nome}" maxlength="100" required
+                           autocomplete="name" th:placeholder="#{contato.placeholder.nome}">
+                    <p class="campo__erro" th:if="${#fields.hasErrors('nome')}" th:text="#{erro.nome}">Informe seu nome.</p>
+                </div>
+
+                <div class="campo">
+                    <label for="email" th:text="#{contato.campo.email}">E-mail</label>
+                    <input type="email" id="email" th:field="*{email}" maxlength="150" required
+                           autocomplete="email" th:placeholder="#{contato.placeholder.email}">
+                    <p class="campo__erro" th:if="${#fields.hasErrors('email')}" th:text="#{erro.email}">Informe um e-mail válido.</p>
+                </div>
+
+                <div class="campo">
+                    <label for="mensagem" th:text="#{contato.campo.mensagem}">Mensagem</label>
+                    <textarea id="mensagem" th:field="*{mensagem}" rows="6" minlength="10" maxlength="2000" required
+                              th:placeholder="#{contato.placeholder.mensagem}"></textarea>
+                    <p class="campo__erro" th:if="${#fields.hasErrors('mensagem')}" th:text="#{erro.mensagem}">Mensagem muito curta.</p>
+                </div>
+
+                <button type="submit" class="botao botao--cheio" th:text="#{contato.botao}">Enviar mensagem</button>
+            </form>
+        </section>
+    </div>
+</main>
+
+<div th:replace="~{fragmentos/base :: rodape}"></div>
+<script th:replace="~{fragmentos/base :: scripts}"></script>
+</body>
+</html>

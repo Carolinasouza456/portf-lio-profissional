@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:lang="${#locale.language}">
+<head th:replace="~{fragmentos/base :: cabecalho(#{sobre.titulo})}"></head>
+<body>
+
+<div th:replace="~{fragmentos/base :: menu}"></div>
+
+<main class="conteudo">
+    <h1 class="titulo-secao" th:text="#{sobre.titulo}">Sobre mim</h1>
+
+    <section class="heroi aparecer">
+        <div class="heroi__texto">
+            <p class="eyebrow" th:text="#{sobre.eyebrow}">Engenharia de Software · PUC Minas</p>
+            <h2 class="heroi__nome" th:text="#{site.nome.completo}">Carolina Almeida Mendes de Souza</h2>
+            <p th:text="#{sobre.paragrafo1}">Texto 1</p>
+            <p th:text="#{sobre.paragrafo2}">Texto 2</p>
+            <p th:text="#{sobre.paragrafo3}">Texto 3</p>
+            <div class="botoes">
+                <a class="botao botao--cheio" th:href="@{/projetos}" th:text="#{sobre.botao.projetos}">Ver projetos</a>
+                <a class="botao" th:href="@{/contato}" th:text="#{sobre.botao.contato}">Entrar em contato</a>
+            </div>
+        </div>
+
+        <figure class="heroi__foto">
+            <img th:src="@{/img/foto-carolina.jpg}" th:alt="#{sobre.foto.alt}" width="900" height="675">
+        </figure>
+    </section>
+
+    <section class="grade-cartoes aparecer">
+        <article class="cartao">
+            <h3 class="cartao__titulo" th:text="#{sobre.formacao.titulo}">Formação</h3>
+            <p th:text="#{sobre.formacao.valor}">Engenharia de Software · PUC Minas</p>
+        </article>
+
+        <article class="cartao">
+            <h3 class="cartao__titulo" th:text="#{sobre.area.titulo}">Área de atuação</h3>
+            <p th:text="#{sobre.area.valor}">Desenvolvimento web</p>
+        </article>
+
+        <article class="cartao">
+            <h3 class="cartao__titulo" th:text="#{sobre.interesses.titulo}">Interesses</h3>
+            <p th:text="#{sobre.interesses.valor}">Interesses</p>
+        </article>
+
+        <article class="cartao">
+            <h3 class="cartao__titulo" th:text="#{sobre.objetivo.titulo}">Objetivo</h3>
+            <p th:text="#{sobre.objetivo.valor}">Objetivo</p>
+        </article>
+
+        <article class="cartao">
+            <h3 class="cartao__titulo" th:text="#{sobre.idiomas.titulo}">Idiomas</h3>
+            <ul class="lista-simples">
+                <li th:text="#{sobre.idioma.pt}">Português · fluente</li>
+                <li th:text="#{sobre.idioma.en}">Inglês · fluente</li>
+                <li th:text="#{sobre.idioma.de}">Alemão · fluente</li>
+                <li th:text="#{sobre.idioma.ja}">Japonês · nível N3</li>
+            </ul>
+        </article>
+
+        <article class="cartao">
+            <h3 class="cartao__titulo" th:text="#{sobre.tecnologias.titulo}">Tecnologias</h3>
+            <ul class="etiquetas">
+                <li>Python</li>
+                <li>Java</li>
+                <li>Go</li>
+                <li>Spring Boot</li>
+                <li>HTML</li>
+                <li>CSS</li>
+                <li>JavaScript</li>
+            </ul>
+        </article>
+    </section>
+</main>
+
+<div th:replace="~{fragmentos/base :: rodape}"></div>
+<script th:replace="~{fragmentos/base :: scripts}"></script>
+</body>
+</html>

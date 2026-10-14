@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:lang="${#locale.language}">
+<head th:replace="~{fragmentos/base :: cabecalho(#{projetos.titulo})}"></head>
+<body>
+
+<div th:replace="~{fragmentos/base :: menu}"></div>
+
+<main class="conteudo">
+    <h1 class="titulo-secao" th:text="#{projetos.titulo}">Linha do Tempo dos Projetos</h1>
+    <p class="intro" th:text="#{projetos.intro}">Dos mais antigos aos mais recentes.</p>
+
+    <!-- Linha do tempo: um bloco por ano, em ordem crescente -->
+    <ol class="linha-tempo">
+        <li class="linha-tempo__ano aparecer" th:each="entrada : ${projetosPorAno}">
+            <h2 class="linha-tempo__titulo" th:text="${entrada.key}">2026</h2>
+
+            <article class="projeto" th:each="p : ${entrada.value}"
+                     th:with="nome=#{${'projeto.' + p.id + '.nome'}}">
+
+                <div class="projeto__imagens">
+                    <button type="button" class="projeto__capa" th:attr="data-galeria=${p.id},data-src=${p.imagens[0]},data-alt=${nome}"
+                            th:title="#{projetos.ampliar}">
+                        <img th:src="@{${p.imagens[0]}}" th:alt="${nome}" loading="lazy">
+                    </button>
+
+                    <div class="projeto__miniaturas" th:aria-label="#{projetos.telas}">
+                        <button type="button" th:each="imagem, estado : ${p.imagens}"
+                                th:attr="data-galeria=${p.id},data-src=${imagem},data-alt=${nome + ' (' + estado.count + ')'}"
+                                th:title="#{projetos.ampliar}">
+                            <img th:src="@{${imagem}}" th:alt="${nome + ' (' + estado.count + ')'}" loading="lazy">
+                        </button>
+                    </div>
+                </div>
+
+                <div class="projeto__info">
+                    <p class="projeto__data">
+                        <span th:text="#{${'mes.' + p.mes}}">junho</span>
+                        <span th:text="${p.ano}">2026</span>
+                    </p>
+                    <h3 class="projeto__nome" th:text="${nome}">Nome do projeto</h3>
+                    <p class="projeto__descricao" th:text="#{${'projeto.' + p.id + '.descricao'}}">Descrição</p>
+
+                    <h4 class="projeto__subtitulo" th:text="#{projetos.tecnologias}">Tecnologias</h4>
+                    <ul class="etiquetas">
+                        <li th:each="tecnologia : ${p.tecnologias}" th:text="${tecnologia}">HTML5</li>
+                    </ul>
+
+                    <a class="botao" th:href="${p.repositorio}" target="_blank" rel="noopener noreferrer">
+                        <span th:text="#{projetos.repositorio}">Ver no GitHub</span>
+                    </a>
+                </div>
+            </article>
+        </li>
+    </ol>
+</main>
+
+<div th:replace="~{fragmentos/base :: rodape}"></div>
+<script th:replace="~{fragmentos/base :: scripts}"></script>
+</body>
+</html>
